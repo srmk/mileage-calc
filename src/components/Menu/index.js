@@ -22,6 +22,7 @@ class CustomMaterialMenu extends React.PureComponent {
     };
 
     render() {
+        const { route, navigation } = this.props;
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Menu
@@ -32,13 +33,55 @@ class CustomMaterialMenu extends React.PureComponent {
                             size={28}
                             color={'gray'}
                             onPress={this.showMenu}
-                            style={{ marginRight: 5 }}
+                            style={{ paddingRight: 10 }}
                         />
                     }
                 >
-                    <MenuItem onPress={this.hideMenu}>Settings</MenuItem>
-                    <MenuDivider />
-                    <MenuItem onPress={this.hideMenu}> Login / SignUp </MenuItem>
+                    {route.name === 'Home' && <>
+                        <MenuItem
+                            onPress={() => {
+                                navigation.navigate('Settings');
+                                this.hideMenu()
+                            }}
+                        >
+                            Settings
+                        </MenuItem>
+                        <MenuItem
+                            onPress={() => {
+                                this.hideMenu()
+                            }}
+                        >
+                            Rate Us
+                        </MenuItem>
+                        <MenuItem
+                            onPress={() => {
+                                navigation.navigate('About');
+                                this.hideMenu()
+                            }}
+                        >
+                            About us
+                        </MenuItem>
+                    </>
+                    }
+                    {route.name === 'FuelLog' && <>
+                        <MenuItem
+                            onPress={() => {
+                                this.hideMenu()
+                            }}
+                        >
+                            Clear
+                        </MenuItem>
+                        <MenuItem
+                            onPress={() => {
+                                this.hideMenu()
+                            }}
+                        >
+                            Cloud Backup
+                        </MenuItem>
+                    </>
+                    }
+                    {/* <MenuDivider />
+                    <MenuItem onPress={this.hideMenu}> Login / SignUp </MenuItem> */}
                 </Menu>
             </View>
         );

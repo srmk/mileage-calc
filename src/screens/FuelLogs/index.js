@@ -1,35 +1,132 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import { Title, Paragraph } from 'react-native-paper';
+import Cards from '../../components/Cards';
+
+const FuelLogHistory = [
+    {
+        Title: 'Card Title 1',
+        subTitle: 'SubTitle 1',
+        values: {
+            FuelPrice: 1,
+            TravelKM: 1,
+            TotalFuel: 1,
+            Mileage: 1,
+            TotalFuelPrice: 1,
+            createdAt: '21-2-2020'
+        }
+    },
+    {
+        Title: 'Card Title 1',
+        subTitle: 'SubTitle 1',
+        values: {
+            FuelPrice: 1,
+            TravelKM: 1,
+            TotalFuel: 1,
+            Mileage: 1,
+            TotalFuelPrice: 1,
+            createdAt: '21-2-2020'
+        }
+    },
+    {
+        Title: 'Card Title 1',
+        subTitle: 'SubTitle 1',
+        values: {
+            FuelPrice: 1,
+            TravelKM: 1,
+            TotalFuel: 1,
+            Mileage: 1,
+            TotalFuelPrice: 1,
+            createdAt: '21-2-2020'
+        }
+    },
+    {
+        Title: 'Card Title 1',
+        subTitle: 'SubTitle 1',
+        values: {
+            FuelPrice: 1,
+            TravelKM: 1,
+            TotalFuel: 1,
+            Mileage: 1,
+            TotalFuelPrice: 1,
+            createdAt: '21-2-2020'
+        }
+    },
+    {
+        Title: 'Card Title 1',
+        subTitle: 'SubTitle 1',
+        values: {
+            FuelPrice: 1,
+            TravelKM: 1,
+            TotalFuel: 1,
+            Mileage: 1,
+            TotalFuelPrice: 1,
+            createdAt: '21-2-2020'
+        }
+    },
+    {
+        Title: 'Card Title 1',
+        subTitle: 'SubTitle 1',
+        values: {
+            FuelPrice: 1,
+            TravelKM: 1,
+            TotalFuel: 1,
+            Mileage: 1,
+            TotalFuelPrice: 1,
+            createdAt: '21-2-2020'
+        }
+    },
+    {
+        Title: 'Card Title 1',
+        subTitle: 'SubTitle 1',
+        values: {
+            FuelPrice: 1,
+            TravelKM: 1,
+            TotalFuel: 1,
+            Mileage: 1,
+            TotalFuelPrice: 1,
+            createdAt: '21-2-2020'
+        }
+    }
+]
 
 export default class FuelLogs extends Component {
     constructor(props) {
         super(props);
+        console.log('FUEL LOG', props);
     }
     render() {
         return (
-            <View style={styles.container}>
-                <Card>
-                    <Card.Title title="Card Title" subtitle="Card Subtitle" left={(props) => <Avatar.Icon {...props} icon="folder" />} />
-                    <Card.Content>
-                        <Title>Card title</Title>
-                        <Paragraph>Card content</Paragraph>
-                    </Card.Content>
-                    <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-                    <Card.Actions>
-                        <Button>Cancel</Button>
-                        <Button>Ok</Button>
-                    </Card.Actions>
-                </Card>
-            </View>
+            <ScrollView>
+                <View style={styles.container}>
+                    {
+                        FuelLogHistory.map((val) => {
+                            return (
+                                <View style={styles.cardParentStyle}>
+                                    <Cards CardTitle="Title" isIcon CardSubTitle={'sub title'}>
+                                        <Title>Card title</Title>
+                                        <Paragraph>Card content</Paragraph>
+                                    </Cards>
+                                </View>
+                            )
+                        })
+                    }
+                </View>
+            </ScrollView>
         )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
+        paddingTop: 20,
+        paddingBottom: 65
+    },
+    cardParentStyle: {
         justifyContent: 'center',
-        padding: 20,
-        backgroundColor: '#ffffff',
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 5,
+        marginBottom: 5
     },
 });

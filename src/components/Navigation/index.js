@@ -8,27 +8,39 @@ import CustomMaterialMenu from '../Menu';
 
 import HomeScreen from '../../screens/HomeScreen';
 import FuelLogs from '../../screens/FuelLogs';
+import Settings from '../../screens/Settings';
+import MileageCalc from '../../screens/MileageCalc';
 
 const HomeStack = createStackNavigator();
 
 function HomeStackScreen() {
     return (
-        <HomeStack.Navigator initialRouteName="Home">
+        <HomeStack.Navigator
+            initialRouteName="Home"
+            screenOptions={({ route, navigation }) => ({
+                headerRight: () => (
+                    <CustomMaterialMenu
+                        navigation={navigation}
+                        route={route}
+                    />
+                ),
+            })}
+        >
             <HomeStack.Screen
                 name="Home"
                 component={HomeScreen}
                 options={{
                     headerTitleAlign: 'center',
                     headerTitle: "Mileage Calculator",
-                    headerRight: () => (
-                        <CustomMaterialMenu
-                            menutext="Menu"
-                            menustyle={{ marginRight: 16 }}
-                            textStyle={{ color: 'white' }}
-                            isIcon={true}
-                        />
-                    ),
                 }}
+            />
+             <HomeStack.Screen
+                name="MileageCalc"
+                component={MileageCalc}
+            />
+            <HomeStack.Screen
+                name="Settings"
+                component={Settings}
             />
         </HomeStack.Navigator>
     );
@@ -38,10 +50,24 @@ const LogHistoryStack = createStackNavigator();
 
 function LogHistoryStackScreen() {
     return (
-        <LogHistoryStack.Navigator initialRouteName="Feed">
+        <LogHistoryStack.Navigator
+            initialRouteName="FuelLog"
+            screenOptions={({ route, navigation }) => ({
+                headerRight: () => (
+                    <CustomMaterialMenu
+                        navigation={navigation}
+                        route={route}
+                    />
+                ),
+            })}
+        >
+            <LogHistoryStack.Screen
+                name="MileageCalc"
+                component={MileageCalc}
+            />
             <LogHistoryStack.Screen
                 name="FuelLog"
-                component={FuelLogs}
+                component={(props) => <FuelLogs {...props} />}
                 options={{
                     headerTitleAlign: 'center',
                     headerTitle: "Log History"
@@ -51,14 +77,14 @@ function LogHistoryStackScreen() {
     );
 }
 
-export const BottomMenu = () => {
+export const Navigation = () => {
     const Tab = createBottomTabNavigator();
     return (
         <View style={{ flex: 1, position: "relative" }}>
             <Tab.Navigator
                 tabBar={(props) => <TabBar {...props} />}
             >
-                <Tab.Screen name="ios-calculator" component={HomeStackScreen} />
+                <Tab.Screen name="ios-home" component={HomeStackScreen} />
                 <Tab.Screen name="ios-book" component={LogHistoryStackScreen} />
             </Tab.Navigator>
             {useSafeArea().bottom > 0 && (
