@@ -14,7 +14,7 @@ export default class index extends Component {
     render() {
         return (
             <View style={styles.chartContainer}>
-                <Title>Bezier Line Chart</Title>
+                <Title>Statistics</Title>
                 <LineChart
                     data={{
                         labels: ["January", "February", "March", "April", "May", "June"],

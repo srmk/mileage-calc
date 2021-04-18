@@ -12,10 +12,10 @@ export default class Cards extends Component {
             <>
                 <Card elevation={2} style={style ? style : styles.cardStyle}>
                     {imgSrc && <Card.Cover source={{ uri: imgSrc }} />}
-                    <Card.Title
+                    {CardTitle && <Card.Title
                         title={CardTitle}
                         subtitle={CardSubTitle}
-                    />
+                    />}
                     <Card.Content>
                         {children}
                     </Card.Content>

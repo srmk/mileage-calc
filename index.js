@@ -7,7 +7,8 @@ import App from './App';
 import React from 'react';
 import { name as appName } from './app.json';
 import { Provider } from 'react-redux';
-import { store } from './src/redux/Store';
+import { store, persistor } from './src/redux/Store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 // Ignore log notification by message
 LogBox.ignoreLogs(['Warning: ...']);
@@ -17,7 +18,9 @@ LogBox.ignoreAllLogs();
 
 const MileageCalc = () => (
     <Provider store={store}>
-        <App />
+        <PersistGate loading={null} persistor={persistor}>
+            <App />
+        </PersistGate>
     </Provider>
 )
 

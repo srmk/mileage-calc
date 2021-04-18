@@ -131,11 +131,13 @@
 // });
 
 import React, { Component } from 'react';
-import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import t from 'tcomb-form-native';
+import { connect } from "react-redux";
+import { TextInput, Title, Paragraph } from 'react-native-paper';
+import { saveFuelLogHistory } from '../../redux/ReduxSlices/FuelLogSlice';
 import _ from 'lodash';
-
 import ModelDialog from '../../components/ModelDialog';
 
 let Form = t.form.Form
@@ -146,6 +148,22 @@ stylesheet.textbox.normal.height = 50;
 stylesheet.textbox.error.height = 50;
 stylesheet.textbox.normal.backgroundColor = '#fff';
 stylesheet.textbox.error.backgroundColor = '#fff';
+
+function PaperInputField({ label, value, onChange, hasError, error, ...rest }) {
+    return (
+        <View style={{ marginBottom: 20 }}>
+            <TextInput
+                label={label}
+                value={value}
+                selectionColor={'#fff'}
+                underlineColor={'#fff'}
+                style={styles.inputStyle}
+                onChangeText={onChange}
+            />
+            {hasError && <Text style={{ color: 'red' }}>{error}</Text>}
+        </View>
+    );
+}
 class MileageForm extends Component {
     constructor(props) {
         super(props);
@@ -183,7 +201,6 @@ class MileageForm extends Component {
         var value = this.formRef.getValue();
         if (value) {
             await this.calculateMileage(value);
-            this.setState({ showResult: true });
             console.log(value);
         }
     }
@@ -198,11 +215,13 @@ class MileageForm extends Component {
                 mileage: Math.round(TravelKM / TotalFuel),
                 fuelCostPerKM: FuelPrice,
                 TotalFuelPrice: FuelPrice
-            }
+            },
+            showResult: true
         })
     }
 
-    saveLog = async () => {
+    saveLog() {
+        this.props.dispatch(saveFuelLogHistory(this.state.fuelEfficiency));
         this.setState({
             params: {
                 FuelPrice: null,
@@ -235,52 +254,77 @@ class MileageForm extends Component {
                     label: 'Fuel Price (Rs)',
                     placeholder: '0',
                     help: '',
-                    error: 'Insert a valid email',
-                    templates: () => myCustomTemplate()
+                    error: 'Insert a valid data',
+                    template: PaperInputField
                 },
                 TravelKM: {
                     label: 'Travel KM (Km)',
                     placeholder: '0',
                     help: '',
-                    error: 'Insert a valid email'
+                    error: 'Insert a valid data',
+                    template: PaperInputField
                 },
                 TotalFuel: {
                     label: 'Total Fuel (Ltr)',
                     placeholder: '0',
                     help: '',
-                    error: 'Insert a valid email'
+                    error: 'Insert a valid data',
+                    template: PaperInputField
                 },
                 Mileage: {
                     label: 'Mileage (Km/Ltr)',
                     placeholder: '0',
                     help: '',
-                    error: 'Insert a valid email'
+                    error: 'Insert a valid data',
+                    template: PaperInputField
                 },
                 TotalFuelPrice: {
                     label: 'Total Fuel Price (Rs)',
                     placeholder: '0',
                     help: '',
-                    error: 'Insert a valid email'
+                    error: 'Insert a valid data',
+                    template: PaperInputField
                 }
             }
         }
         const { fuelEfficiency } = this.state;
         return (
-            <KeyboardAwareScrollView>
-                <View style={styles.container}>
-                    <Form
-                        ref={(e) => this.formRef = e}
-                        type={FormModel}
-                        options={Options}
-                        value={this.state.params}
-                        onChange={this.onChange}
-                    />
-                    <TouchableHighlight style={styles.button} onPress={this.submitForResult} underlayColor='#99d9f4'>
-                        <Text style={styles.buttonText}>Calculate</Text>
-                    </TouchableHighlight>
-                </View>
-                <ModelDialog />
-            </KeyboardAwareScrollView>
+            <>
+                <KeyboardAwareScrollView>
+                    <View style={styles.container}>
+                        <Form
+                            ref={(e) => this.formRef = e}
+                            type={FormModel}
+                            options={Options}
+                            value={this.state.params}
+                            onChange={this.onChange}
+                        />
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={this.submitForResult}>
+                            <Text style={styles.buttonText}>Calculate</Text>
+                        </TouchableOpacity>
+                    </View>
+                </KeyboardAwareScrollView>
+                <ModelDialog
+                    showResult={this.state.showResult}
+                    saveLog={this.saveLog}
+                    closeLog={() => this.setState({ showResult: false })}
+                >
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Title>Total Fuel Price: </Title>
+                        <Paragraph>{fuelEfficiency.TotalFuelPrice}</Paragraph>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Title>Mileage: </Title>
+                        <Paragraph>{fuelEfficiency.mileage}</Paragraph>
+                    </View>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Title>Cost / KM: </Title>
+                        <Paragraph>{fuelEfficiency.fuelCostPerKM}</Paragraph>
+                    </View>
+                </ModelDialog>
+            </>
         )
     }
 }
@@ -292,21 +336,32 @@ const styles = StyleSheet.create({
         // backgroundColor: '#ffffff',
     },
     buttonText: {
-        fontSize: 20,
-        color: 'white',
-        alignSelf: 'center'
+        color: '#FFFFFF',
+        fontSize: 22,
     },
     button: {
-        height: 50,
-        backgroundColor: '#000',
-        borderColor: '#ffffff00',
-        borderWidth: 1,
-        borderRadius: 10,
-        marginBottom: 80,
-        marginTop: 10,
-        alignSelf: 'stretch',
-        justifyContent: 'center'
+        display: 'flex',
+        height: 60,
+        borderRadius: 6,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        backgroundColor: '#2AC062',
+        shadowColor: '#2AC062',
+        shadowOpacity: 0.5,
+        shadowOffset: {
+            height: 10,
+            width: 0
+        },
+        shadowRadius: 25,
+    },
+    inputStyle: {
+        backgroundColor: '#fff'
     }
 });
 
-export default MileageForm;
+const mapStateToProps = (state) => ({
+    //
+  });
+
+export default connect(mapStateToProps)(MileageForm);

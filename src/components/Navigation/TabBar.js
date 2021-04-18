@@ -4,7 +4,7 @@ import {
     TouchableOpacity,
     Dimensions,
     StyleSheet,
-    Animated
+    Animated,
 } from "react-native";
 import { BottomMenuItem } from "./MenuItem";
 
