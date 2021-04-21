@@ -136,7 +136,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import t from 'tcomb-form-native';
 import { connect } from "react-redux";
 import { TextInput, Title, Paragraph } from 'react-native-paper';
-import { saveFuelLogHistory } from '../../redux/ReduxSlices/FuelLogSlice';
+import { saveMileageCalculationHistory } from '../../redux/ReduxSlices/FuelLogSlice';
 import _ from 'lodash';
 import ModelDialog from '../../components/ModelDialog';
 
@@ -155,12 +155,17 @@ function PaperInputField({ label, value, onChange, hasError, error, ...rest }) {
             <TextInput
                 label={label}
                 value={value}
-                selectionColor={'#fff'}
-                underlineColor={'#fff'}
+                error={error ? true : false}
+                theme={{
+                    colors: {
+                        primary: '#2AC062',
+                        underlineColor: '#2AC062'
+                    }
+                }}
                 style={styles.inputStyle}
                 onChangeText={onChange}
             />
-            {hasError && <Text style={{ color: 'red' }}>{error}</Text>}
+            {hasError && <Paragraph style={{ color: 'red' }}>{error}</Paragraph>}
         </View>
     );
 }
@@ -180,7 +185,7 @@ class MileageForm extends Component {
             fuelEfficiency: {
                 mileage: 0,
                 fuelCostPerKM: 0,
-                TotalFuelPrice: 0
+                TotalFuelPrice: 0,
             },
             showResult: false
         }
@@ -201,7 +206,6 @@ class MileageForm extends Component {
         var value = this.formRef.getValue();
         if (value) {
             await this.calculateMileage(value);
-            console.log(value);
         }
     }
 
@@ -220,8 +224,8 @@ class MileageForm extends Component {
         })
     }
 
-    saveLog() {
-        this.props.dispatch(saveFuelLogHistory(this.state.fuelEfficiency));
+    saveLog = async () => {
+        await this.props.dispatch(saveMileageCalculationHistory(this.state.fuelEfficiency));
         this.setState({
             params: {
                 FuelPrice: null,
@@ -233,7 +237,8 @@ class MileageForm extends Component {
             fuelEfficiency: {
                 mileage: 0,
                 fuelCostPerKM: 0,
-                TotalFuelPrice: 0
+                TotalFuelPrice: 0,
+                type: 0
             },
             showResult: false
         });
@@ -362,6 +367,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
     //
-  });
+});
 
 export default connect(mapStateToProps)(MileageForm);

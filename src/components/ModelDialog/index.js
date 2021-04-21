@@ -11,7 +11,7 @@ import Modal from 'react-native-modal';
 const { width, height } = Dimensions.get('window');
 export default class ModelDialog extends Component {
     render() {
-        const { showResult, saveLog, closeLog, children } = this.props;
+        const { showResult, saveLog, closeLog, children, btnLabels, onBackdropPress } = this.props;
         return (
             <Modal
                 testID={'modal'}
@@ -20,11 +20,8 @@ export default class ModelDialog extends Component {
                 deviceWidth={width}
                 deviceHeight={height}
                 animationOut={'slideOutDown'}
-                // animationInTiming={600}
-                // animationOutTiming={600}
-                // backdropTransitionInTiming={800}
-                // backdropTransitionOutTiming={800}
                 isVisible={showResult}
+                onBackdropPress={onBackdropPress}
             >
                 <View style={styles.container}>
                     <View style={styles.content}>
@@ -36,14 +33,14 @@ export default class ModelDialog extends Component {
                             style={styles.closeButton}
                             onPress={saveLog}
                         >
-                            <Text style={styles.text}>Save</Text>
+                            <Text style={styles.text}>{btnLabels ? btnLabels.ok :'Save'}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             delayPressIn={150}
                             style={styles.closeButton}
                             onPress={closeLog}
                         >
-                            <Text style={styles.text}>Cancel</Text>
+                            <Text style={styles.text}>{btnLabels ? btnLabels.cancel :'Cancel'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -55,7 +52,7 @@ export default class ModelDialog extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
-        padding: 20,
+        // padding: 20,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 4,
@@ -63,12 +60,12 @@ const styles = StyleSheet.create({
     },
     content: {
         padding: 15,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        width: '100%'
         // marginBottom: 80,
     },
     footer: {
-        paddingTop: 15,
-        paddingBottom: 0,
+        padding: 15,
         borderTopColor: '#f1f1f1',
         borderTopWidth: 1,
         width: '100%',

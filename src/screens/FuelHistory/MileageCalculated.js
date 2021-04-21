@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
-import { ScrollView, View, StyleSheet, Dimensions } from 'react-native';
-import { Title, Paragraph } from 'react-native-paper';
+import { ScrollView, View, Text, StyleSheet, Dimensions } from 'react-native';
+import { Title, Paragraph, FAB } from 'react-native-paper';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Cards from '../../components/Cards';
 import LottieView from 'lottie-react-native';
 import empty from '../../lottie_Json/list_empty.json';
+import { navigate } from '../../components/Navigation/navigation_helper';
 import _ from 'lodash';
 
-const { height } = Dimensions.get('window');
-class FuelLogs extends Component {
+const { height, width } = Dimensions.get('window');
+class MileageCalculated extends Component {
+    state = {
+        openFab: false
+    }
     render() {
-        const { fuelLogHistory } = this.props;
+        const { mileageCalculationHistory } = this.props;
         return (
             <ScrollView>
                 <View style={styles.container}>
-                    {!_.isEmpty(fuelLogHistory) ?
-                        fuelLogHistory.map((val, i) => {
+                    {!_.isEmpty(mileageCalculationHistory) ?
+                        mileageCalculationHistory.map((val, i) => {
                             return (
                                 <View key={`log_field_${i}`} style={styles.cardParentStyle}>
                                     <Cards style={{ padding: 15, borderRadius: 10 }}>
@@ -25,15 +29,15 @@ class FuelLogs extends Component {
                                                 if (key === 'createdAt') {
                                                     return (
                                                         <View key={key} style={{ alignSelf: 'flex-end', flexDirection: 'row' }}>
-                                                            <Icon name={'time-outline'} color={'#c1c1c1'} size={22} /> 
+                                                            <Icon name={'time-outline'} color={'#c1c1c1'} size={22} />
                                                             <Paragraph style={{ marginLeft: 5 }}>{val[key]}</Paragraph>
                                                         </View>
                                                     )
                                                 } else {
                                                     return (
                                                         <View key={key} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                            <Title>{key} :</Title>
-                                                            <Paragraph>{val[key]}</Paragraph>
+                                                            <Title>{(_.startCase(key))} :</Title>
+                                                            <Text> {val[key]}</Text>
                                                         </View>
                                                     )
                                                 }
@@ -47,6 +51,7 @@ class FuelLogs extends Component {
                             autoPlay
                             loop
                             source={empty}
+                            style={styles.emptyContainer}
                         />
                     }
                 </View>
@@ -57,8 +62,9 @@ class FuelLogs extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: height - 80,
+        // height: height - 80,
         paddingTop: 20,
+        marginBottom: 80,
         paddingBottom: 65
     },
     cardParentStyle: {
@@ -69,18 +75,16 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     emptyContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        height: height / 2,
+        alignSelf: 'center'
     }
 });
 
 const mapStateToProps = ({ fuelLogs }) => {
-    const { fuelLogHistory } = fuelLogs;
-    console.log(fuelLogs);
+    const { mileageCalculationHistory } = fuelLogs;
     return {
-        fuelLogHistory
+        mileageCalculationHistory
     }
 }
 
-export default connect(mapStateToProps)(FuelLogs);
+export default connect(mapStateToProps)(MileageCalculated);

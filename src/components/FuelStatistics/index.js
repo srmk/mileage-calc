@@ -17,7 +17,7 @@ export default class index extends Component {
                 <Title>Statistics</Title>
                 <LineChart
                     data={{
-                        labels: ["January", "February", "March", "April", "May", "June"],
+                        labels: [],
                         datasets: [
                             {
                                 data: [

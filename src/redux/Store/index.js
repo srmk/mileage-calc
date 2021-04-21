@@ -15,6 +15,7 @@ const reducers = combineReducers({
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
+    whitelist: ['fuelLogs', 'currFuelPrice']
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

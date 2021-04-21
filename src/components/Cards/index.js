@@ -9,7 +9,6 @@ export default class Cards extends Component {
     render() {
         const { CardTitle, CardSubTitle, children, imgSrc, isIcon, style } = this.props;
         return (
-            <>
                 <Card elevation={2} style={style ? style : styles.cardStyle}>
                     {imgSrc && <Card.Cover source={{ uri: imgSrc }} />}
                     {CardTitle && <Card.Title
@@ -24,7 +23,6 @@ export default class Cards extends Component {
                         <Button>Ok</Button>
                     </Card.Actions> */}
                 </Card>
-            </>
         )
     }
 }

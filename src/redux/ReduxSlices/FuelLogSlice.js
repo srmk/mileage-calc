@@ -1,17 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 import moment from 'moment';
 
+const createdAt = moment().format('MM-DD-YYYY, h:mm:ss a');
 const fuelLogSlice = createSlice({
     name: "fuelLogs",
     initialState: {
-        fuelLogHistory: []
+        mileageCalculationHistory: [],
+        fuelHistory: []
     },
     reducers: {
-        saveFuelLogHistory(state, action) {
-            state.fuelLogHistory = [
-                ...state.fuelLogHistory,
+        saveMileageCalculationHistory(state, action) {
+            state.mileageCalculationHistory = [
+                ...state.mileageCalculationHistory,
                 {
-                    createdAt: moment().format('MM-DD-YYYY, h:mm:ss a'),
+                    createdAt: createdAt,
+                    ...action.payload,
+                }
+            ]
+        },
+        saveFuelLogHistory(state, action) {
+            state.fuelHistory = [
+                ...state.fuelHistory,
+                {
+                    createdAt: createdAt,
                     ...action.payload,
                 }
             ]
@@ -19,6 +30,6 @@ const fuelLogSlice = createSlice({
     }
 });
 
-export const { saveFuelLogHistory } = fuelLogSlice.actions
+export const { saveMileageCalculationHistory, saveFuelLogHistory } = fuelLogSlice.actions
 
 export default fuelLogSlice.reducer;

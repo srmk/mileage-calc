@@ -1,34 +1,21 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { DefaultTheme, Provider as PaperProvider, FAB } from 'react-native-paper';
+// import { DefaultTheme, Provider as PaperProvider, FAB } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Navigation } from './src/components/Navigation';
-import { navigationRef, navigate } from './src/components/Navigation/navigation_helper';
+import { navigationRef } from './src/components/Navigation/navigation_helper';
 
 export default function App() {
   return (
     <NavigationContainer ref={navigationRef}>
       <SafeAreaProvider>
         <Navigation />
-        {/* <FAB
-          style={styles.fab}
-          animated
-          icon="plus"
-          color="white"
-          onPress={() => navigate('MileageCalc')}
-        /> */}
       </SafeAreaProvider>
     </NavigationContainer>
   )
 }
 
 const styles = StyleSheet.create({
-  fab: {
-    position: 'absolute',
-    margin: 20,
-    right: 0,
-    bottom: 60,
-  },
 })

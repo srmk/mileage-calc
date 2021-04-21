@@ -6,6 +6,29 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+const menuItems = [
+    {
+        id: 'howTo',
+        label: 'How to use?',
+        navigateTo: 'HowtoUse'
+    },
+    {
+        id: 'help',
+        label: 'Help / Feedbacl',
+        navigateTo: 'Help'
+    },
+    {
+        id: 'settings',
+        label: 'Settings',
+        navigateTo: 'Settings'
+    },
+    {
+        id: 'about',
+        label: 'About us',
+        navigateTo: 'About'
+    },
+]
+
 class CustomMaterialMenu extends React.PureComponent {
     _menu = null;
 
@@ -37,48 +60,20 @@ class CustomMaterialMenu extends React.PureComponent {
                         />
                     }
                 >
-                    {route.name === 'Home' && <>
-                        <MenuItem
-                            onPress={() => {
-                                navigation.navigate('Settings');
-                                this.hideMenu()
-                            }}
-                        >
-                            Settings
-                        </MenuItem>
-                        <MenuItem
-                            onPress={() => {
-                                this.hideMenu()
-                            }}
-                        >
-                            Rate Us
-                        </MenuItem>
-                        <MenuItem
-                            onPress={() => {
-                                navigation.navigate('About');
-                                this.hideMenu()
-                            }}
-                        >
-                            About us
-                        </MenuItem>
-                    </>
-                    }
-                    {route.name === 'FuelLog' && <>
-                        <MenuItem
-                            onPress={() => {
-                                this.hideMenu()
-                            }}
-                        >
-                            Clear
-                        </MenuItem>
-                        <MenuItem
-                            onPress={() => {
-                                this.hideMenu()
-                            }}
-                        >
-                            Cloud Backup
-                        </MenuItem>
-                    </>
+                    {
+                        menuItems.map((item) => {
+                            return (
+                                <MenuItem
+                                    key={item.id}
+                                    onPress={() => {
+                                        navigation.navigate(item.navigateTo);
+                                        this.hideMenu()
+                                    }}
+                                >
+                                    {item.label}
+                                </MenuItem>
+                            )
+                        })
                     }
                     {/* <MenuDivider />
                     <MenuItem onPress={this.hideMenu}> Login / SignUp </MenuItem> */}

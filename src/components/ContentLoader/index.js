@@ -4,8 +4,6 @@ import ContentLoader, { Rect, Circle, Path } from "react-content-loader/native"
 const ContentPreLoader = (props) => (
     <ContentLoader
         speed={2}
-        width={400}
-        height={160}
         viewBox="0 0 400 160"
         backgroundColor="#d6d6d6"
         foregroundColor="#ecebeb"
