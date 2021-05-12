@@ -1,59 +1,3 @@
-// import React, { Component } from 'react'
-// import { StyleSheet, Text, View, Dimensions } from 'react-native';
-// import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
-// import Cards from '../Cards';
-
-// const { width } = Dimensions.get('window');
-
-// export class FuelPriceBoard extends Component {
-//     render() {
-//         const { data: { fuelPriceData } } = this.props;
-//         return (
-//             <View style={styles.priceContainer}>
-//                 {
-//                     fuelPriceData.products && fuelPriceData.products.map((item, i) => {
-//                         const padding = i === 0 ? { paddingRight: 3 } : { paddingLeft: 3 };
-//                         return (
-//                             <View
-//                                 style={[styles.priceBoards, padding]}
-//                             >
-//                                 <Cards
-//                                     style={{
-//                                         backgroundColor: '#fff',
-//                                     }}
-//                                     CardTitle={`${item.productPrice} ${item.productCurrency}`}
-//                                     CardSubTitle={item.productName}
-//                                     isIcon={false}
-//                                 >
-//                                     <View style={{ alignSelf: 'flex-end' }}>
-//                                         <Paragraph>Price Change: {item.priceChangeSign} {item.priceChange}</Paragraph>
-//                                     </View>
-//                                 </Cards>
-//                             </View>
-//                         )
-//                     })
-//                 }
-//             </View>
-//         )
-//     }
-// }
-
-// const styles = StyleSheet.create({
-//     priceContainer: {
-//         flex: 1,
-//         width: width,
-//         padding: 20,
-//         paddingBottom: 0,
-//         marginBottom: 20,
-//         flexDirection: 'row',
-//     },
-//     priceBoards: {
-//         flex: 1
-//     }
-// })
-
-// export default FuelPriceBoard
-
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, Dimensions, TouchableOpacity } from 'react-native';
 import { Title, Paragraph } from 'react-native-paper';
@@ -73,12 +17,13 @@ export default function FuelPriceBoard(props) {
     const [popup, openPopup] = useState(false);
     const [region, setRegion] = useState({ state: 'Tamil-Nadu', district: 'SALEM' });
     const { data: { fuelPriceData, States, Districts, loading } } = props;
+    const { products } = fuelPriceData;
     const dispatch = useDispatch();
 
     const _dropDownOptinos = (options = []) => {
         return options.map((opt) => ({ label: _.startCase(opt), value: opt }))
     }
-console.log('RENDERING');
+    console.log('RENDERING');
     return (
         <View style={{ padding: 20 }}>
             <View style={{ flexDirection: 'row', paddingBottom: 10, justifyContent: 'space-between' }}>
@@ -88,43 +33,48 @@ console.log('RENDERING');
                 </TouchableOpacity> */}
             </View>
             <View style={styles.priceContainer}>
-                {
-                    fuelPriceData?.products.map((item, i) => {
-                        const padding = i === 0 ? { paddingRight: 3 } : { paddingLeft: 3 };
-                        console.log('LJDFNKJDKFJASN: ', item);
-                        return (
-                            <View
-                                key={item.productName}
-                                style={[styles.priceBoards, padding]}
-                            >
-                                <Cards
-                                    style={{
-                                        backgroundColor: '#fff',
-                                    }}
-                                >
-                                    {
-                                        !item.productName ? <ContentPreLoader width={120} height={120} style={styles.priceContent} /> :
-                                            <View style={styles.priceContent}>
-                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'baseline' }}>
-                                                    <Text style={styles.preiceTitle}>{item.productPrice}</Text>
-                                                    <Text>{item.productCurrency}</Text>
-                                                </View>
-                                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'baseline' }}>
-                                                    <Paragraph>{item.productName}</Paragraph>
-                                                </View>
-                                                <View style={{ alignSelf: 'flex-end', flexDirection: 'row' }}>
-                                                    <Paragraph>Price Change: </Paragraph>
-                                                    <Paragraph style={{ color: item.priceChangeSign == '-' ? 'red' : 'green' }}>
-                                                        {item.priceChangeSign} {item.priceChange || 0}
-                                                    </Paragraph>
-                                                </View>
-                                            </View>
-                                    }
-                                </Cards>
+                <View style={[styles.priceBoards, { paddingRight: 3 }]}>
+                    <Cards style={{ backgroundColor: '#fff', }}>
+                        {!products[0].productName ? <ContentPreLoader width={120} height={120} style={styles.priceContent} /> :
+                            <View style={styles.priceContent}>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'baseline' }}>
+                                    <Text style={styles.preiceTitle}>{products[0].productPrice}</Text>
+                                    <Text>{products[0].productCurrency}</Text>
+                                </View>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'baseline' }}>
+                                    <Paragraph>{products[0].productName}</Paragraph>
+                                </View>
+                                <View style={{ alignSelf: 'flex-end', flexDirection: 'row' }}>
+                                    <Paragraph>Price Change: </Paragraph>
+                                    <Paragraph style={{ color: 'green' }}>
+                                        {products[0].priceChangeSign} {products[0].priceChange || 0}
+                                    </Paragraph>
+                                </View>
                             </View>
-                        )
-                    })
-                }
+                        }
+                    </Cards>
+                </View>
+                <View style={[styles.priceBoards, { paddingRight: 3 }]}>
+                    <Cards style={{ backgroundColor: '#fff', }}>
+                        {!products[1].productName ? <ContentPreLoader width={120} height={120} style={styles.priceContent} /> :
+                            <View style={styles.priceContent}>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'baseline' }}>
+                                    <Text style={styles.preiceTitle}>{products[1].productPrice}</Text>
+                                    <Text>{products[1].productCurrency}</Text>
+                                </View>
+                                <View style={{ flex: 1, flexDirection: 'row', alignItems: 'baseline' }}>
+                                    <Paragraph>{products[1].productName}</Paragraph>
+                                </View>
+                                <View style={{ alignSelf: 'flex-end', flexDirection: 'row' }}>
+                                    <Paragraph>Price Change: </Paragraph>
+                                    <Paragraph style={{ color: 'green' }}>
+                                        {products[1].priceChangeSign} {products[1].priceChange || 0}
+                                    </Paragraph>
+                                </View>
+                            </View>
+                        }
+                    </Cards>
+                </View>
             </View>
             <ModelDialog
                 showResult={popup}
